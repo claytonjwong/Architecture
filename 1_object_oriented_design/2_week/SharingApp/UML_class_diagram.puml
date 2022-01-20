@@ -53,99 +53,100 @@ class AppCompatActivity {
     -performMenuItemShortcut()
 }
 class AddItemActivity {
-    -title
-    -maker
-    -description
-    -length
-    -width
-    -height
-    -photo
-    -image
-    -REQUEST_CODE
-    -item_list
-    -context
-    +saveItem()
-    +addPhoto()
-    +deletePhoto()
-    #onCreate()
-    #onActivityResult()
+    -title : EditText
+    -maker : EditText
+    -description : EditText
+    -length : EditText
+    -width : EditText
+    -height : EditText
+    -photo : ImageView
+    -image : Bitmap
+    -REQUEST_CODE : Int
+    -item_list : ItemList
+    -context : Context
+    +saveItem(View) : void
+    +addPhoto(View) : void
+    +deletePhoto(View) : void
+    #onCreate(Bundle)
+    #onActivityResult(Int, Int, Intent)
 }
 class EditItemActivity {
-    -item_list
-    -item
-    -context
-    -image
-    -REQUEST_CODE
-    -photo
-    -title
-    -maker
-    -description
-    -length
-    -width
-    -height
-    -borrower
-    -borrower_tv
-    -status
-    +addPhoto()
-    +deletePhoto()
-    +deleteItem()
-    +toggleSwitch()
-    #onCreate
-    #onActivityResult
+    -item_list : ItemList
+    -item : Item
+    -context : Context
+    -image : BitMap
+    -REQUEST_CODE : Int
+    -photo : ImageView
+    -title : EditText
+    -maker : EditText
+    -description : EditText
+    -length : EditText
+    -width : EditText
+    -height : EditText
+    -borrower : EditText
+    -borrower_tv : TextView
+    -status : Switch
+    +addPhoto(View) : void
+    +deletePhoto(View)
+    +deleteItem(View)
+    +toggleSwitch(View)
+    #onCreate(Bundle)
+    #onActivityResult(Int, Int, Intent)
 }
 class ItemList {
-    -items
-    -FILENAME
+    -items : ArrayList<Item>
+    -FILENAME : String
     +ItemList()
-    +setItems()
-    +getItems()
-    +addItem()
-    +deleteItem()
-    +getItem()
-    +getIndex()
-    +loadItems()
-    +saveItems()
-    +filterItemsByStatus()
+    +setItems() : void
+    +getItems() : void
+    +addItem() : void
+    +deleteItem() : void
+    +getItem(Int) : Item
+    +getIndex(Item) : Int
+    +getSize() : Int
+    +loadItems(Context) : void
+    +saveItems(Context) : void
+    +filterItemsByStatus(String) : ArrayList<Item>
 }
 class Item {
-    -title
-    -maker
-    -description
-    -dimensions
-    -status
-    -borrower
-    -image
-    -image_base64
-    -id
-    +Item()
-    +getId()
-    +setId()
-    +updateId()
-    +setTitle()
-    +getTitle()
-    +setMaker()
-    +getMaker()
-    +setDescription()
-    +getDescription()
-    +setDimensions()
-    +getDimensions()
-    +setStatus()
-    +getStatus()
-    +setBorrower()
-    +getBorrower()
-    +addImage()
-    +getImage()
+    -title : String
+    -maker : String
+    -description : String
+    -dimensions : Dimensions
+    -status : String
+    -borrower : String
+    -id : String
+    #image : Bitmap
+    #image_base64  : String
+    +Item(String, String, String, Dimensions, Bitmap, String)
+    +getId() : String
+    +setId() : void
+    +updateId() : void
+    +setTitle() : void
+    +getTitle() : String
+    +setMaker() : void
+    +getMaker() : String
+    +setDescription() : void
+    +getDescription() : String
+    +setDimensions() : void
+    +getDimensions() : String
+    +setStatus() : void
+    +getStatus() : String
+    +setBorrower() : void
+    +getBorrower() : String
+    +addImage() : void
+    +getImage() : Bitmap
 }
 class Dimensions {
-    -length
-    -width
-    -height
-    +Dimensions()
-    +getLength()
-    +getWidth()
-    +getHeight()
-    +getDimensions()
-    +setDimensions()
+    -length : String
+    -width : String
+    -height : String
+    +Dimensions() : String
+    +getLength() : String
+    +getWidth() : String
+    +getHeight() : String
+    +getDimensions() : String
+    +setDimensions() : void
 }
 AppCompatActivity <|-- AddItemActivity
 AppCompatActivity <|-- EditItemActivity
