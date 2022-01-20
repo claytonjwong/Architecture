@@ -1,0 +1,160 @@
+@startuml SDA 1.1 UML Class Diagram
+title SDA 1.1 UML Class Diagram
+class AppCompatActivity {
+    -mDelegate
+    -mResources
+    +AppCompatActivity()
+    +onCreate()
+    +setTheme()
+    +getSupportActionBar()
+    +setSupportActionBar()
+    +getMenuInflater()
+    +setContentView()
+    +addContentView()
+    +onConfigurationChanged()
+    +findViewById()
+    +onMenuItemSelected()
+    +supportRequestWindowFeature()
+    +supportInvalidateOptionsMenu()
+    +onSupportActionModeStarted()
+    +onSupportActionModeFinished()
+    +onWindowStartingSupportActionMode()
+    +startSupportActionMode()
+    +setSupportProgressBarVisibility()
+    +setSupportProgressBarIndeterminateVisibility()
+    +setSupportProgressBarIndeterminate()
+    +setSupportProgress()
+    +onCreateSupportNavigateUpTaskStack()
+    +onPrepareSupportNavigateUpTaskStack()
+    +onSupportNavigateUp()
+    +getSupportParentActivityIntent()
+    +supportShouldUpRecreateTask()
+    +supportNavigateUpTo()
+    +onContentChanged()
+    +onSupportContentChanged()
+    +getDrawerToggleDelegate()
+    +onMenuOpened()
+    +onPanelClosed()
+    +getDelegate()
+    +dispatchKeyEvent()
+    +getResources()
+    +onKeyDown()
+    +openOptionsMenu()
+    +closeOptionsMenu()
+    #attachBaseContext()
+    #onPostCreate()
+    #onPostResume()
+    #onStart()
+    #onStop()
+    #onDestroy()
+    #onTitleChanged()
+    #onSaveInstanceState()
+    #onNightModeChanged()
+    -performMenuItemShortcut()
+}
+class AddItemActivity {
+    -title
+    -maker
+    -description
+    -length
+    -width
+    -height
+    -photo
+    -image
+    -REQUEST_CODE
+    -item_list
+    -context
+    +saveItem()
+    +addPhoto()
+    +deletePhoto()
+    #onCreate()
+    #onActivityResult()
+}
+class EditItemActivity {
+    -item_list
+    -item
+    -context
+    -image
+    -REQUEST_CODE
+    -photo
+    -title
+    -maker
+    -description
+    -length
+    -width
+    -height
+    -borrower
+    -borrower_tv
+    -status
+    +addPhoto()
+    +deletePhoto()
+    +deleteItem()
+    +toggleSwitch()
+    #onCreate
+    #onActivityResult
+}
+class ItemList {
+    -items
+    -FILENAME
+    +ItemList()
+    +setItems()
+    +getItems()
+    +addItem()
+    +deleteItem()
+    +getItem()
+    +getIndex()
+    +loadItems()
+    +saveItems()
+    +filterItemsByStatus()
+}
+class Item {
+    -title
+    -maker
+    -description
+    -dimensions
+    -status
+    -borrower
+    -image
+    -image_base64
+    -id
+    +Item()
+    +getId()
+    +setId()
+    +updateId()
+    +setTitle()
+    +getTitle()
+    +setMaker()
+    +getMaker()
+    +setDescription()
+    +getDescription()
+    +setDimensions()
+    +getDimensions()
+    +setStatus()
+    +getStatus()
+    +setBorrower()
+    +getBorrower()
+    +addImage()
+    +getImage()
+}
+class Dimensions {
+    -length
+    -width
+    -height
+    +Dimensions()
+    +getLength()
+    +getWidth()
+    +getHeight()
+    +getDimensions()
+    +setDimensions()
+}
+AppCompatActivity <|-- AddItemActivity
+AppCompatActivity <|-- EditItemActivity
+AddItemActivity ..> Item : <<create>>
+AddItemActivity ..> Dimensions : <<create>>
+AddItemActivity "1" *-- "1" ItemList
+EditItemActivity ..> Dimensions : <<create>>
+EditItemActivity "1" *-- "1" ItemList
+EditItemActivity "1" o-- "1" Item
+ItemList "0..*" o-- "0..*" Item
+Item "1" *-- "1" Dimensions
+@enduml
