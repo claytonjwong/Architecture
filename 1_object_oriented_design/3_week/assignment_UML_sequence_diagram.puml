@@ -1,0 +1,69 @@
+@startuml
+
+title SharingApp: UML Sequence Diagram
+
+actor User
+participant View
+participant AddItemActivity as AddItem
+participant ItemList
+participant SaveFile
+participant Dimensions
+participant Item
+
+skinparam responseMessageBelowArrow true
+skinparam roundcorner 20
+
+critical Initialization
+    [-> AddItem: onCreate(savedInstanceState)
+    activate AddItem
+    AddItem -> ItemList: loadItems(context)
+    activate ItemList
+    ItemList -> SaveFile: gson.fromJson()
+    activate SaveFile
+    loop
+        SaveFile -> Item: create Item from json
+        Item --> ItemList: add item to list
+    end
+    AddItem --> View: render items
+    deactivate SaveFile
+    deactivate ItemList
+    deactivate AddItem
+end
+
+alt User adds a new item
+User -> View: onClick(view)
+activate View
+View -> AddItem: saveItem(view)
+activate AddItem
+AddItem -> AddItem: user input validation
+activate AddItem
+deactivate AddItem
+AddItem -> Dimensions: create Dimensions(length, width, height)
+activate Dimensions
+Dimensions --> AddItem: new Dimensions object
+deactivate Dimensions
+AddItem -> Item: create Item(title, maker, description, dimensions, image)
+activate Item
+Item -> Item: addImage()
+activate Item
+deactivate Item
+alt Identifier parameter is null
+    Item -> Item: setId()
+else Identifier parameter is not null
+    Item -> Item: updateId(id)
+end
+Item --> AddItem: new Item object
+deactivate Item
+AddItem -> ItemList: addItem(item)
+activate ItemList
+AddItem -> ItemList: saveItems(context)
+ItemList -> SaveFile: gson.toJson(items)
+activate SaveFile
+deactivate SaveFile
+AddItem --> View: render items
+deactivate ItemList
+deactivate AddItem
+
+end
+
+@enduml
