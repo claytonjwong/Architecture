@@ -1,0 +1,41 @@
+@startuml
+
+state AddItem <<fork>>
+[*] --> AddItem: add item
+AddItem --> Available_NoPhoto: without photograph
+AddItem --> Available_Photo: with photograph
+
+Available_NoPhoto : status = "available"
+Available_NoPhoto : image = NULL
+Available_NoPhoto : borrower = NULL
+
+Available_Photo : status = "available"
+Available_Photo : image = BLOB
+Available_Photo : borrower = NULL
+
+Borrowed_NoPhoto : status = "borrowed"
+Borrowed_NoPhoto : image = NULL
+Borrowed_NoPhoto : borrower = "borrower name"
+
+Borrowed_Photo : status = "borrowed"
+Borrowed_Photo : image = BLOB
+Borrowed_Photo : borrower = "borrower name"
+
+Available_NoPhoto --> Borrowed_NoPhoto: borrow [if available]
+Available_Photo --> Borrowed_Photo: borrow [if available]
+
+Borrowed_NoPhoto --> Available_NoPhoto: available [if borrowed]
+Borrowed_Photo --> Available_Photo: available [if borrowed]
+
+Available_NoPhoto --> Available_Photo: add photograph
+Available_Photo --> Available_NoPhoto: erase photograph [if photograph exists]
+
+Borrowed_NoPhoto --> Borrowed_Photo: add photograph
+Borrowed_Photo --> Borrowed_NoPhoto: erase photograph [if photograph exists]
+
+Available_NoPhoto --> [*]: delete item
+Available_Photo --> [*]: delete item
+Borrowed_NoPhoto --> [*]: delete item
+Borrowed_Photo --> [*]: delete item
+
+@enduml
