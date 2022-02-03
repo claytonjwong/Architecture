@@ -62,6 +62,7 @@ public class ItemList {
     }
 
     public void loadItems(Context context) {
+
         try {
             FileInputStream fis = context.openFileInput(FILENAME);
             InputStreamReader isr = new InputStreamReader(fis);
@@ -102,8 +103,9 @@ public class ItemList {
     }
 
     public ArrayList<Contact> getActiveBorrowers() {
+
         ArrayList<Contact> active_borrowers = new ArrayList<Contact>();
-        for (Item i: items) {
+        for (Item i : items) {
             Contact borrower = i.getBorrower();
             if (borrower != null) {
                 active_borrowers.add(borrower);
@@ -111,5 +113,6 @@ public class ItemList {
         }
         return active_borrowers;
     }
+
 }
 

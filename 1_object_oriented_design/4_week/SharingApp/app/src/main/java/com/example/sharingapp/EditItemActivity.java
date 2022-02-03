@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,11 +17,10 @@ import android.widget.TextView;
 /**
  * Editing a pre-existing item consists of deleting the old item and adding a new item with the old
  * item's id.
- *
- * Note: invisible EditText is used ot setError for status.  For whatever reason, we cannot use setError
- * to update the status Switch; so instead an error is set to an "invisible" EditText.
+ * Note: invisible EditText is used to setError for status. For whatever reason we cannot .setError to
+ * the status Switch so instead an error is set to an "invisible" EditText.
  */
-public class EditItemActivity extends AppCompatActivity {
+public class EditItemActivity extends AppCompatActivity{
 
     private ItemList item_list = new ItemList();
     private Item item;
@@ -71,13 +70,13 @@ public class EditItemActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item, contact_list.getAllUsernames());
         borrower_spinner.setAdapter(adapter);
 
-        Intent intent = getIntent(); // Get intent from ItemsFragment
+        Intent intent = getIntent();   // Get intent from ItemsFragment
         int pos = intent.getIntExtra("position", 0);
 
         item = item_list.getItem(pos);
 
         Contact contact = item.getBorrower();
-        if (contact != null) {
+        if (contact != null){
             int contact_pos = contact_list.getIndex(contact);
             borrower_spinner.setSelection(contact_pos);
         }
@@ -131,6 +130,7 @@ public class EditItemActivity extends AppCompatActivity {
 
     public void deleteItem(View view) {
         item_list.deleteItem(item);
+
         item_list.saveItems(context);
 
         // End EditItemActivity
@@ -146,8 +146,8 @@ public class EditItemActivity extends AppCompatActivity {
         String length_str = length.getText().toString();
         String width_str = width.getText().toString();
         String height_str = height.getText().toString();
-        Contact contact = null;
 
+        Contact contact = null;
         if (!status.isChecked()) {
             String borrower_str = borrower_spinner.getSelectedItem().toString();
             contact = contact_list.getContactByUsername(borrower_str);
@@ -185,8 +185,7 @@ public class EditItemActivity extends AppCompatActivity {
             return;
         }
 
-        // Reuse the item id
-        String id = item.getId();
+        String id = item.getId(); // Reuse the item id
         item_list.deleteItem(item);
 
         Item updated_item = new Item(title_str, maker_str, description_str, dimensions, image, id);
@@ -196,8 +195,9 @@ public class EditItemActivity extends AppCompatActivity {
             updated_item.setStatus("Borrowed");
             updated_item.setBorrower(contact);
         }
-        item_list.deleteItem(item);
+
         item_list.addItem(updated_item);
+
         item_list.saveItems(context);
 
         // End EditItemActivity
@@ -210,16 +210,28 @@ public class EditItemActivity extends AppCompatActivity {
      * Unchecked = Borrowed
      */
     public void toggleSwitch(View view){
-        if (status.isChecked()) {  // available
-            // Means was previously borrowed
+        if (status.isChecked()) {
+            // Means was previously borrowed, switch was toggled to available
             borrower_spinner.setVisibility(View.GONE);
             borrower_tv.setVisibility(View.GONE);
             item.setBorrower(null);
             item.setStatus("Available");
 
-        } else {  // not available
-            borrower_spinner.setVisibility(View.VISIBLE);
-            borrower_tv.setVisibility(View.VISIBLE);
+        } else {
+            // Means not borrowed
+            if (contact_list.getSize()==0){
+                // No contacts, need to add contacts to be able to add a borrower.
+                invisible.setEnabled(false);
+                invisible.setVisibility(View.VISIBLE);
+                invisible.requestFocus();
+                invisible.setError("No contacts available! Must add borrower to contacts.");
+                status.setChecked(true); // Set switch to available
+
+            } else {
+                // Means was previously available
+                borrower_spinner.setVisibility(View.VISIBLE);
+                borrower_tv.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

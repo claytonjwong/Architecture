@@ -107,9 +107,7 @@ public class ContactList {
     public boolean isUsernameAvailable(String username) {
         for (Contact c: contacts)
             if (c.getUsername() == username)
-                return true;
-        return false;
+                return false;
+        return true;
     }
-
-
 }

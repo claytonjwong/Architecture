@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.util.ArrayList;
 
 /**
- * ContactAdapater is responsible for what information is displayed in the ListView entries.
+ * ContactAdapter is responsible setting for what information is displayed in ListView entries.
  */
 public class ContactAdapter extends ArrayAdapter<Contact> {
+
     private LayoutInflater inflater;
     private Context context;
 
@@ -24,8 +26,9 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // getItem(position) gets the "contact" at "position" in the "contacts"
-        // (where "contacts" is the parameter in the ContactAdapter creator as seen above ^^)
+
+        // getItem(position) gets the "contact" at "position" in the "contacts" ArrayList
+        // (where "contacts" is a parameter in the ContactAdapter creator as seen above ^^)
         Contact contact = getItem(position);
 
         String username = "Username: " + contact.getUsername();
@@ -40,9 +43,10 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
         TextView email_tv = (TextView) convertView.findViewById(R.id.email_tv);
         ImageView photo = (ImageView) convertView.findViewById(R.id.contacts_image_view);
 
+        photo.setImageResource(android.R.drawable.ic_menu_gallery);
+
         username_tv.setText(username);
         email_tv.setText(email);
-        photo.setImageResource(android.R.drawable.ic_menu_gallery);
 
         return convertView;
     }
