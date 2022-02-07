@@ -16,6 +16,8 @@ public class Playlist implements IComponent {
     }
     public void setPlaybackSpeed(float speed) {
         this.speed = speed;
+        for (IComponent component: playlist)
+            component.setPlaybackSpeed(speed);
     }
     public String getName() {
         return name;
