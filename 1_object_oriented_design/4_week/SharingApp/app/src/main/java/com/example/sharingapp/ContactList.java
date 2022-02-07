@@ -48,7 +48,10 @@ public class ContactList {
     }
 
     public Contact getContact(int index) {
-        return contacts.get(index);
+        if (index < contacts.size())
+            return contacts.get(index);
+        else
+            return null;
     }
 
     public int getSize() {
@@ -58,13 +61,13 @@ public class ContactList {
     public int getIndex(Contact c) {
         int N = contacts.size();
         int i = 0;
-        while (i < N && contacts.get(i) != c)
+        while (i < N && !contacts.get(i).getId().equals(c.getId()))
             ++i;
         return i;
     }
 
     public boolean hasContact(Contact c) {
-        return contacts.contains(c);
+        return getIndex(c) < getSize();
     }
 
     public Contact getContactByUsername(String username) {
@@ -79,7 +82,7 @@ public class ContactList {
             FileInputStream fis = context.openFileInput(FILENAME);
             InputStreamReader isr = new InputStreamReader(fis);
             Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Item>>() {}.getType();
+            Type listType = new TypeToken<ArrayList<Contact>>() {}.getType();
             contacts = gson.fromJson(isr, listType); // temporary
             fis.close();
         } catch (FileNotFoundException e) {
@@ -105,9 +108,6 @@ public class ContactList {
     }
 
     public boolean isUsernameAvailable(String username) {
-        for (Contact c: contacts)
-            if (c.getUsername() == username)
-                return false;
-        return true;
+        return getContactByUsername(username) == null;
     }
 }

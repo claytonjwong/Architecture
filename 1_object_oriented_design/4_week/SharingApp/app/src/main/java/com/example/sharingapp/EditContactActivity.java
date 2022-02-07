@@ -77,6 +77,7 @@ public class EditContactActivity extends AppCompatActivity {
 
     public void deleteContact(View view) {
 
+
         contact_list.deleteContact(contact);
         contact_list.saveContacts(context);
 

@@ -30,16 +30,16 @@ public class Contact {
         this.id = id;
     }
 
-    public void setUsername() {
-        // not implemented
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setEmail() {
-        // not implemented
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getEmail() {
