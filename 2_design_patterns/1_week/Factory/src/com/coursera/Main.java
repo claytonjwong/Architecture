@@ -3,10 +3,9 @@ package com.coursera;
 public class Main {
 
     public static void main(String[] args) {
-        KnifeFactory factory = new KnifeFactory();
-        KnifeStore store = new KnifeStore(factory);
-	    Knife a = store.orderKnife("butter");
-        Knife b = store.orderKnife("steak");
+        BudgetKnifeStore store = new BudgetKnifeStore();
+        Knife a = store.createKnife("butter");
+        Knife b = store.createKnife("steak");
         System.out.println("a: " + a.toString());
         System.out.println("b: " + b.toString());
         for (int i = 0; i < 10; ++i)  a.cut(); // cut some butter
