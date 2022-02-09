@@ -4,8 +4,9 @@ public class Main {
 
     public static void main(String[] args) {
         KnifeFactory factory = new KnifeFactory();
-	    Knife a = factory.createKnife("butter");
-        Knife b = factory.createKnife("steak");
+        KnifeStore store = new KnifeStore(factory);
+	    Knife a = store.orderKnife("butter");
+        Knife b = store.orderKnife("steak");
         System.out.println("a: " + a.toString());
         System.out.println("b: " + b.toString());
         for (int i = 0; i < 10; ++i)  a.cut(); // cut some butter
