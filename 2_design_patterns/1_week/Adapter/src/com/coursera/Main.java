@@ -8,3 +8,10 @@ public class Main {
         adapter.chooseSecondSelection();
     }
 }
+
+/*
+Adapter: translation between chooseFirstSelection() -> selectA()
+Old coffee: selectA() invoked
+Adapter: translation between chooseSecondSelection() -> selectB()
+Old coffee: selectB() invoked
+*/
