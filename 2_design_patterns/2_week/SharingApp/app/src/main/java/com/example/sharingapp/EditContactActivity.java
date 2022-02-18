@@ -55,9 +55,6 @@ public class EditContactActivity extends AppCompatActivity {
         }
 
         String username_str = username.getText().toString();
-        String id = contact.getId(); // Reuse the contact id
-
-        contact_list.deleteContact(contact);
 
         // Check that username is unique AND username is changed (Note: if username was not changed
         // then this should be fine, because it was already unique.)
@@ -66,10 +63,20 @@ public class EditContactActivity extends AppCompatActivity {
             return;
         }
 
+        String id = contact.getId(); // Reuse the contact id
         Contact updated_contact = new Contact(username_str, email_str, id);
 
-        contact_list.addContact(updated_contact);
-        contact_list.saveContacts(context);
+        DeleteContactCommand deleteCmd = new DeleteContactCommand(context, contact_list, contact);
+        deleteCmd.execute();
+        if (!deleteCmd.isExecuted()) {
+            return;
+        }
+
+        EditContactCommand editCmd = new EditContactCommand(context, contact_list, contact, updated_contact);
+        editCmd.execute();
+        if (!editCmd.isExecuted()) {
+            return;
+        }
 
         // End EditContactActivity
         finish();
