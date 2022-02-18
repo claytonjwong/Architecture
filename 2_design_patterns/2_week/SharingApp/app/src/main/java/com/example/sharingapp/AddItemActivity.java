@@ -90,8 +90,11 @@ public class AddItemActivity extends AppCompatActivity {
         Dimensions dimensions = new Dimensions(length_str, width_str, height_str);
         Item item = new Item(title_str, maker_str, description_str, dimensions, image, null );
 
-        item_list.addItem(item);
-        item_list.saveItems(context);
+        AddItemCommand cmd = new AddItemCommand(context, item_list, item);
+        cmd.execute();
+        if (!cmd.isExecuted()) {
+            return;
+        }
 
         // End AddItemActivity
         Intent intent = new Intent(this, MainActivity.class);

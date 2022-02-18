@@ -186,9 +186,13 @@ public class EditItemActivity extends AppCompatActivity{
         }
 
         String id = item.getId(); // Reuse the item id
-        item_list.deleteItem(item);
-
         Item updated_item = new Item(title_str, maker_str, description_str, dimensions, image, id);
+
+        DeleteItemCommand deleteCmd = new DeleteItemCommand(context, item_list, item);
+        deleteCmd.execute();
+        if (!deleteCmd.isExecuted()) {
+            return;
+        }
 
         boolean checked = status.isChecked();
         if (!checked) {
@@ -196,9 +200,11 @@ public class EditItemActivity extends AppCompatActivity{
             updated_item.setBorrower(contact);
         }
 
-        item_list.addItem(updated_item);
-
-        item_list.saveItems(context);
+        EditItemCommand editCommand = new EditItemCommand(context, item_list, item, updated_item);
+        editCommand.execute();
+        if (!editCommand.isExecuted()) {
+            return;
+        }
 
         // End EditItemActivity
         Intent intent = new Intent(this, MainActivity.class);
