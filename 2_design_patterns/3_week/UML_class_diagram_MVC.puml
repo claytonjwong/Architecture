@@ -1,0 +1,40 @@
+@startuml
+class Employee {
+    -name: String
+    -number: Int
+    -title: String
+    -salary: Double
+    -observers: ArrayList<Observer>
+    +getName(): String
+    +setName(String): void
+    +getNumber(): Int
+    +setNumber(Int): void
+    +getTitle(): String
+    +setTitle(String): void
+    +getSalary(): Double
+    +setSalary(Double): void
+    -notifyObservers(): void
+}
+class EmployeeController {
+    -employees: ArrayList<Employee>
+    -views: ArrayList<EmployeeView>
+    +getEmployeeName(Employee): String
+    +setEmployeeName(Employee, String): void
+    +getEmployeeNumber(Employee): Int
+    +setEmployeeNumber(Employee, Int): void
+    +getEmployeeTitle(Employee): String
+    +setEmployeeTitle(Employee, String): void
+    +getEmployeeSalary(Employee): Double
+    +setEmployeeSalary(Employee, Double): void
+    +addEmployee(Employee): void
+    +removeEmployee(Employee): void
+    +addView(EmployeeView): void
+    +removeView(EmployeeView): void
+}
+class EmployeeView {
+    +displayEmployeeInfo(): void
+}
+Employee ..o EmployeeController
+Employee ..o EmployeeView
+EmployeeView ..o EmployeeController
+@enduml
