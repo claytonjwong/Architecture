@@ -14,7 +14,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class ContactList {
+public class ContactList extends Observable {
 
     private ArrayList<Contact> contacts;
     private String FILENAME = "contacts.sav";
@@ -25,6 +25,7 @@ public class ContactList {
 
     public void setContacts(ArrayList<Contact> contacts) {
         this.contacts = contacts;
+        notifyObservers();
     }
 
     public ArrayList<Contact> getContacts() {
@@ -45,6 +46,7 @@ public class ContactList {
 
     public void deleteContact(Contact c) {
         contacts.remove(c);
+        notifyObservers();
     }
 
     public Contact getContact(int index) {
@@ -90,6 +92,7 @@ public class ContactList {
         } catch (IOException e) {
             contacts = new ArrayList<>();
         }
+        notifyObservers();
     }
 
     public boolean saveContacts(Context context) {
