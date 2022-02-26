@@ -38,7 +38,7 @@ public class ItemListController {
 
    public boolean editItem(Item item, Item updated_item, Context context){
        EditItemCommand edit_item_command = new EditItemCommand(context, item_list, item, updated_item);
-              edit_item_command.execute();
+       edit_item_command.execute();
        return edit_item_command.isExecuted();
    }
 
