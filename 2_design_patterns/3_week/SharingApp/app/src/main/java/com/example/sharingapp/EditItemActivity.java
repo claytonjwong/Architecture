@@ -194,8 +194,8 @@ public class EditItemActivity extends AppCompatActivity implements IObserver {
             // Means was previously borrowed, switch was toggled to available
             borrower_spinner.setVisibility(View.GONE);
             borrower_tv.setVisibility(View.GONE);
-            item.setBorrower(null);
-            item.setStatus("Available");
+            item_controller.setBorrower(null);
+            item_controller.setStatus("Available");
 
         } else {
             // Means not borrowed
