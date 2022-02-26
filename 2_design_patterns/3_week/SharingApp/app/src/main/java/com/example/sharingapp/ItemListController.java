@@ -24,19 +24,19 @@ public class ItemListController {
        return item_list.getItems();
    }
 
-   public boolean addItem(Item item, Context context){
+   public boolean addItem(Context context, Item item){
        AddItemCommand add_item_command = new AddItemCommand(context, item_list, item);
        add_item_command.execute();
        return add_item_command.isExecuted();
    }
 
-   public boolean deleteItem(Item item, Context context) {
+   public boolean deleteItem(Context context, Item item) {
        DeleteItemCommand delete_item_command = new DeleteItemCommand(context, item_list, item);
        delete_item_command.execute();
        return delete_item_command.isExecuted();
    }
 
-   public boolean editItem(Item item, Item updated_item, Context context){
+   public boolean editItem(Context context, Item item, Item updated_item){
        EditItemCommand edit_item_command = new EditItemCommand(context, item_list, item, updated_item);
        edit_item_command.execute();
        return edit_item_command.isExecuted();

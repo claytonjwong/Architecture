@@ -16,9 +16,10 @@ import java.util.ArrayList;
 /**
  * Superclass of AvailableItemsFragment, BorrowedItemsFragment and AllItemsFragment
  */
-public abstract class ItemsFragment extends Fragment {
+public abstract class ItemsFragment extends Fragment implements IObserver {
 
     ItemList item_list = new ItemList();
+    ItemListController item_list_controller = new ItemListController(item_list);
     View rootView = null;
     private ListView list_view = null;
     private ArrayAdapter<Item> adapter = null;
@@ -26,12 +27,17 @@ public abstract class ItemsFragment extends Fragment {
     private LayoutInflater inflater;
     private ViewGroup container;
     private Context context;
+    private Fragment fragment;
+    private boolean update = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         context = getContext();
-        item_list.loadItems(context);
+
+        // Don't update the view yet.  Wait until after items have been filtered.
+        item_list_controller.loadItems(context);
+        update = true;
+
         this.inflater = inflater;
         this.container = container;
 
@@ -44,29 +50,29 @@ public abstract class ItemsFragment extends Fragment {
         selected_items = filterItems();
     }
 
-    public void setAdapter(Fragment fragment){
-        adapter = new ItemAdapter(context, selected_items, fragment);
-        list_view.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    public void loadItems(Fragment fragment) {
+        this.fragment = fragment;
+        item_list_controller.addObserver(this);
+        item_list_controller.loadItems(context);
+    }
 
+    public void setFragmentOnItemLongClickListener() {
         // When item is long clicked, this starts EditItemActivity
-        list_view.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
-
-                Item item = adapter.getItem(pos);
-
-                int meta_pos = item_list.getIndex(item);
-                if (meta_pos >= 0) {
-
-                    Intent edit = new Intent(context, EditItemActivity.class);
-                    edit.putExtra("position", meta_pos);
-                    startActivity(edit);
+        list_view.setOnItemLongClickListener(
+                new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                        Item item = adapter.getItem(pos);
+                        int meta_pos = item_list_controller.getIndex(item);
+                        if (0 <= meta_pos) {
+                            Intent edit = new Intent(context, EditItemActivity.class);
+                            edit.putExtra("position", meta_pos);
+                            startActivity(edit);
+                        }
+                        return true;
+                    }
                 }
-                return true;
-            }
-        });
+        );
     }
 
     /**
@@ -75,4 +81,17 @@ public abstract class ItemsFragment extends Fragment {
      */
     public abstract ArrayList<Item> filterItems();
 
+    public void onDestroy() {
+        super.onDestroy();
+        item_list_controller.removeObserver(this);
+    }
+
+    public void update() {
+        if(!update) {
+            return;
+        }
+        adapter = new ItemAdapter(context, selected_items, fragment);
+        list_view.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 }
