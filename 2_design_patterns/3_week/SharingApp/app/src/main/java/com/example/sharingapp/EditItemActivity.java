@@ -24,11 +24,14 @@ public class EditItemActivity extends AppCompatActivity implements IObserver {
 
     private ItemList item_list = new ItemList();
     private ItemListController item_list_controller = new ItemListController(item_list);
+
     private Item item;
     private ItemController item_controller;
+
     private Context context;
 
     private ContactList contact_list = new ContactList();
+    private ContactListController contact_list_controller = new ContactListController(contact_list);
 
     private Bitmap image;
     private int REQUEST_CODE = 1;
@@ -69,17 +72,16 @@ public class EditItemActivity extends AppCompatActivity implements IObserver {
         invisible.setVisibility(View.GONE);
 
         Intent intent = getIntent();   // Get intent from ItemsFragment
-        int pos = intent.getIntExtra("position", 0);
+        pos = intent.getIntExtra("position", 0);
 
         context = getApplicationContext();
 
-        // TODO: move this down below for updating contact at same time as item
-        on_create_update = true;
         item_list_controller.addObserver(this);
         item_list_controller.loadItems(context);
 
-
-        // TODO: update contact list here
+        on_create_update = true;
+        contact_list_controller.addObserver(this);
+        contact_list_controller.loadContacts(context);
         on_create_update = false;
     }
 
@@ -129,7 +131,7 @@ public class EditItemActivity extends AppCompatActivity implements IObserver {
         Contact contact = null;
         if (!status.isChecked()) {
             String borrower_str = borrower_spinner.getSelectedItem().toString();
-            contact = contact_list.getContactByUsername(borrower_str);
+            contact = contact_list_controller.getContactByUsername(borrower_str);
         }
 
         if (title_str.equals("")) {
@@ -199,7 +201,7 @@ public class EditItemActivity extends AppCompatActivity implements IObserver {
 
         } else {
             // Means not borrowed
-            if (contact_list.getSize()==0){
+            if (contact_list_controller.getSize() == 0){
                 // No contacts, need to add contacts to be able to add a borrower.
                 invisible.setEnabled(false);
                 invisible.setVisibility(View.VISIBLE);
@@ -221,7 +223,7 @@ public class EditItemActivity extends AppCompatActivity implements IObserver {
         }
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                contact_list.getAllUsernames());
+                contact_list_controller.getAllUsernames());
         borrower_spinner.setAdapter(adapter);
 
         item = item_list_controller.getItem(pos);
@@ -229,7 +231,7 @@ public class EditItemActivity extends AppCompatActivity implements IObserver {
 
         Contact contact = item.getBorrower();
         if (contact != null){
-            int contact_pos = contact_list.getIndex(contact);
+            int contact_pos = contact_list_controller.getIndex(contact);
             borrower_spinner.setSelection(contact_pos);
         }
 
