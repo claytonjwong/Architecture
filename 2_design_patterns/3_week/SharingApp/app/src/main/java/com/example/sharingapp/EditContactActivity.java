@@ -12,7 +12,7 @@ import android.widget.EditText;
  * contact's id.
  * Note: You will not be able contacts which are "active" borrowers
  */
-public class EditContactActivity extends AppCompatActivity {
+public class EditContactActivity extends AppCompatActivity implements IObserver {
 
     private ContactList contact_list = new ContactList();
     private ContactListController contact_list_controller = new ContactListController(contact_list);
@@ -24,25 +24,17 @@ public class EditContactActivity extends AppCompatActivity {
     private EditText username;
     private Context context;
 
+    private boolean on_create_update = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_contact);
 
         context = getApplicationContext();
+        contact_list_controller.addObserver(this);
         contact_list_controller.loadContacts(context);
-
-        Intent intent = getIntent();
-        int pos = intent.getIntExtra("position", 0);
-
-        contact = contact_list_controller.getContact(pos);
-        contact_controller = new ContactController(contact);
-
-        username = (EditText) findViewById(R.id.username);
-        email = (EditText) findViewById(R.id.email);
-
-        username.setText(contact_controller.getUsername());
-        email.setText(contact_controller.getEmail());
+        on_create_update = false;
     }
 
     public void saveContact(View view) {
@@ -87,5 +79,21 @@ public class EditContactActivity extends AppCompatActivity {
 
         // End EditContactActivity
         finish();
+    }
+
+    public void update() {
+        if (!on_create_update)
+            return;
+
+        Intent intent = getIntent();
+        int pos = intent.getIntExtra("position", 0);
+        contact = contact_list_controller.getContact(pos);
+        contact_controller = new ContactController(contact);
+
+        username = (EditText) findViewById(R.id.username);
+        email = (EditText) findViewById(R.id.email);
+
+        username.setText(contact_controller.getUsername());
+        email.setText(contact_controller.getEmail());
     }
 }
