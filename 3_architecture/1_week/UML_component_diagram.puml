@@ -1,0 +1,16 @@
+@startuml
+package "SharingApp" {
+    [<<component>>\nMobile App] as MobileApp
+    [<<component>>\nWeb App] as WebApp
+    [<<component>>\nWeb Server] as WS
+    [<<component>>\nApplication Server] as AS
+    [<<component>>\nDBMS] as DB
+    HTTP - WS
+    MobileApp ..> HTTP : use
+    WebApp ..> HTTP : use
+    DataAccess - AS
+    WS ..> DataAccess : use
+    ReadWrite - DB
+    AS ..> ReadWrite : use
+}
+@enduml
