@@ -1,0 +1,43 @@
+@startuml
+frame Deployment {
+    node Client {
+        node "<<device>>\nDesktop PC" {
+            node "<<execution environment>>\nWindows Edge Browser" {
+                artifact "HTML file" as HtmlFile
+                component "Web App" as WebApp
+                HtmlFile ..> WebApp : <<manifests>>
+            }
+        }
+        node "<<device>>\nMobile Handset" {
+            node "<<execution environment>>\nAndroid Marshmallow" {
+                artifact "APK file" as APK
+                component "Mobile App" as MobileApp
+                APK ..> MobileApp : <<manifests>>
+            }
+        }
+    }
+    node Server {
+        node "<<device>>\nMacbook Pro" {
+            node "<<execution environment>>\nLinux Ubuntu 17.4" {
+                artifact "AppServer.jar" as AppServerJar
+                artifact "Database.jar" as DatabaseJar
+                artifact "SharingApp.jar" as SharingAppJar
+                artifact "Schema.xsd" as SchemaXsd
+                artifact "WebServer.jar" as WebServerJar
+                artifact "WebServer.config" as WebServerConfig
+                component "App Server" as AppServer
+                component "Database" as Database
+                component "Web Server" as WebServer
+                AppServerJar ..> AppServer : <<manifests>>
+                AppServer -->> SharingAppJar : <<runs>>
+                DatabaseJar ..> Database : <<manifests>>
+                Database -->> SchemaXsd : <<uses>>
+                WebServerJar ..> WebServer : <<manifests>>
+                WebServer -->> WebServerConfig : <<uses>>
+            }
+        }
+    }
+    MobileApp --(0 WebServer : HTTP
+    WebApp --(0 WebServer : HTTP
+}
+@enduml
