@@ -1,0 +1,45 @@
+@startuml
+title "UML Class Diagram"
+class Item {
+    string title
+    string maker
+    string description
+    string length
+    string width
+    string height
+    blob photo
+    float min_bid
+}
+class ItemList {
+    ArrayList<Item> items
+}
+Item "0..*" --o "1" ItemList
+Item "1" o-- "1" Dimensions
+class Dimensions {
+    string length
+    string width
+    string height
+}
+class User {
+    string username
+    string email
+    string id
+}
+User "0..*" --o "1" UserList
+Item "1" -- "2" User
+class UserList {
+    ArraList<User> users
+}
+class Bid {
+    string item_id
+    string bid_id
+    float bid_amount
+    string bidder_username
+}
+Bid "0..*" --o "1" BidList
+User "1" -- "1" Bid
+Item "1" -- "1" Bid
+class BidList {
+    ArrayList<Bid> bids
+}
+@enduml
