@@ -1,0 +1,52 @@
+@startuml
+title "Utility Tree"
+agent Utility
+agent Performance
+agent Security
+agent Interoperability
+agent Usability
+Utility -- Performance
+Utility -- Security
+Utility -- Interoperability
+Utility -- Usability
+agent Latency
+agent Throughput
+Performance -- Latency
+Performance -- Throughput
+agent "It takes less than one second\nto complete any given task (H)" as Latency1
+Latency -- Latency1
+agent "List other user's items\nunderh heavy load (H)" as Throughput1
+Throughput -- Throughput1
+agent Authentication
+agent Authorization
+Security -- Authentication
+Security -- Authorization
+agent "A user must create or\nhave an account to use\nthe app (H)" as Authentication1
+agent "A user can login to the Mobile or Web app (H)" as Authentication2
+agent "A user cannot place a\nbid on their own items (M)" as Authorization1
+Authentication -- Authentication1
+Authentication -- Authentication2
+Authorization -- Authorization1
+agent SharedStorage
+agent Accessability
+Interoperability -- SharedStorage
+Interoperability -- Accessability
+agent "User data must be in\nshared storage (H)" as SharedStorage1
+agent "User data must be always valid (M)" as SharedStorage2
+agent "Mutually exclusive data access\nwith conflict resolution" as SharedStorage3
+agent "Users can access their\ndata from the Sharing\nMobile App (H)" as Accessability1
+agent "Users can access their\ndata from the Sharing\nWeb App (H)" as Accessability2
+SharedStorage -- SharedStorage1
+SharedStorage -- SharedStorage2
+SharedStorage -- SharedStorage3
+Accessability -- Accessability1
+Accessability -- Accessability2
+agent "Mutable Data" as Mutable
+agent "Immutable Data" as Immutable
+Usability -- Mutable
+Usability -- Immutable
+agent "Users can search for items (H)" as Search
+agent "User can add new items (H)" as Add
+Mutable -- Add
+Immutable -- Search
+@enduml
